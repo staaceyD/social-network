@@ -1,3 +1,20 @@
+import uuid
+
+from django.contrib.auth.models import User
+from django.utils import timezone
 from django.db import models
 
-# Create your models here.
+
+class Post(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.CharField(max_length=200)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(default=timezone.now)
+    likes_number = models.IntegerField(default=0)
+
+
+class PostLike(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    post_id = models.ForeignKey(Post, related_name='postLikes', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
