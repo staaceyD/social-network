@@ -8,6 +8,7 @@ from social_network.core.serializers import PostSerializer
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def create_post(request):
+    request.data["author"] = request.user.pk
     serializer = PostSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
