@@ -21,7 +21,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from social_network.core.views import create_post,post_like
+from social_network.core.views import create_post, post_like
 from social_network.auth.views import register_user
 
 
