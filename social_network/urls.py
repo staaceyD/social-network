@@ -22,11 +22,13 @@ from rest_framework_simplejwt.views import (
 )
 
 from social_network.core.views import create_post
+from social_network.auth.views import register_user
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('posts/', create_post, name='create_post')
+    path('register/', register_user, name='register'),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('posts/', create_post, name='create_post'),
 ]
