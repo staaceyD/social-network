@@ -9,6 +9,8 @@ class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=200)
     body = models.TextField()
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="post")
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(default=timezone.now)
     likes_number = models.IntegerField(default=0)
