@@ -21,7 +21,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from social_network.core.views import create_post, post_like
+from social_network.core.views import create_post, post_dislike, post_like
 from social_network.auth.views import register_user
 
 
@@ -32,4 +32,5 @@ urlpatterns = [
     path('auth/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('posts', create_post, name='create_post'),
     path('posts/<uuid:post_id>/likes', post_like, name='post_likes'),
+    path('posts/<uuid:post_id>/dislikes', post_dislike, name='post_dislikes'),
 ]
