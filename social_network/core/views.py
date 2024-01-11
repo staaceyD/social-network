@@ -2,9 +2,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from django.db.models import Count
 from social_network.core.models import PostLike
 
-from social_network.core.serializers import PostLikeSerializer, PostSerializer
+from social_network.core.serializers import PostLikeAnalyticsSerializer, PostLikeSerializer, PostSerializer
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -41,3 +42,15 @@ def post_dislike(request, post_id):
     return Response("The post cannot be disliked. Like was not found", status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def post_like_analytics(request):
+    date_from = request.query_params.get('date_from')
+    date_to = request.query_params.get('date_to')
+
+    queryset = PostLike.objects.filter(
+        created_at__range=(date_from, date_to)
+    ).values('created_at__date').annotate(likes_count=Count('id'))
+
+    serializer = PostLikeAnalyticsSerializer(queryset, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
