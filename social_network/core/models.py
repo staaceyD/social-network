@@ -20,6 +20,7 @@ class PostLike(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     post_id = models.ForeignKey(Post, related_name='post_likes', on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         # Add a unique constraint to ensure no duplicate likes for a post by the same user
