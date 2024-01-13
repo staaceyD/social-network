@@ -12,7 +12,7 @@ class Post(models.Model):
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="post")
     created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(default=timezone.now)
+    modified_at = models.DateTimeField(auto_now=True)
     likes_number = models.IntegerField(default=0)
 
 
