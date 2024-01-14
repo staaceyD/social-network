@@ -4,11 +4,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from social_network.auth.views import register_user
+from social_network.auth.views import register_user, user_activity_view
 
 
 urlpatterns = [
     path('register', register_user, name='register'),
-    path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login', TokenObtainPairView.as_view(), name='login'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('activity', user_activity_view, name='activity'),
 ]

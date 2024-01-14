@@ -20,7 +20,7 @@ def register_user(request):
 @permission_classes([IsAuthenticated])
 def user_activity_view(request):
     user = request.user
-    last_request = UserLastRequest.objects.get(user=user)
+    last_request = UserLastRequest.objects.get_or_create(user=user)[0]
     last_login = User.objects.get(id=user.id).last_login
 
     return Response({'last_request_at': last_request.last_request_at, 'last_login_at': last_login})
