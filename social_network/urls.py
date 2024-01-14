@@ -15,24 +15,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.urls import include
 from django.urls import path
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
-
-from social_network.core.views import create_post, post_dislike, post_like,post_like_analytics
-from social_network.auth.views import register_user, user_activity_view
-
 
 urlpatterns = [
-    path('admin', admin.site.urls),
-    path('register', register_user, name='register'),
-    path('auth/token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('auth/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
-    path('posts', create_post, name='create_post'),
-    path('posts/<uuid:post_id>/likes', post_like, name='post_likes'),
-    path('posts/<uuid:post_id>/dislikes', post_dislike, name='post_dislikes'),
-    path('posts/likes/analytics', post_like_analytics, name='post_likes_analytics'),
-    path('activity', user_activity_view, name='user_activity'),
+    path('admin/', admin.site.urls),
+    path('posts/', include('social_network.core.urls')),
+    path('auth/', include('social_network.auth.urls'))
 ]
