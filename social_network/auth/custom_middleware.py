@@ -7,12 +7,11 @@ class LastActiveMiddleware:
 
     def __call__(self, request):
         response = self.get_response(request)
-        
+
         # Update last activity
         user = request.user
         if user.is_authenticated:
             last_request = UserLastRequest.objects.get_or_create(user=user)[0]
             last_request.save()
-
 
         return response
