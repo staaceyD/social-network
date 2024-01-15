@@ -1,21 +1,25 @@
 from rest_framework import serializers
+
 from .models import Post, PostLike
 
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = "__all__"
+
 
 class PostLikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostLike
-        fields = '__all__'
+        fields = "__all__"
+
 
 class PostCreateSerializer(serializers.Serializer):
     body = serializers.CharField()
     title = serializers.CharField()
 
+
 class PostLikeAnalyticsSerializer(serializers.Serializer):
-    date = serializers.DateField(source='created_at__date')
+    date = serializers.DateField(source="created_at__date")
     likes_count = serializers.IntegerField()
