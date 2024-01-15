@@ -102,11 +102,14 @@ def post_like_analytics(request):
     """
     Takes dates range in params to return the amount of likes made that day grouped by dates
     """
+    user_id = request.user.pk
     date_from = request.query_params.get("date_from")
     date_to = request.query_params.get("date_to")
 
     queryset = (
-        PostLike.objects.filter(created_at__range=(date_from, date_to))
+        PostLike.objects.filter(
+            created_at__range=(date_from, date_to), post_id__author=user_id
+        )
         .values("created_at__date")
         .annotate(likes_count=Count("id"))
     )
