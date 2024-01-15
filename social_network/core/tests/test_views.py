@@ -58,7 +58,7 @@ class PostRelatedViewTests(APITestCase):
 
         # dislike the post
         response = self.client.delete(dislike_url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
         # check that both tables got updated
         post = Post.objects.get(id=self.post.id)

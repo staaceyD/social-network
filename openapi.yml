@@ -125,13 +125,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Post'
+              $ref: '#/components/schemas/PostCreate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Post'
+              $ref: '#/components/schemas/PostCreate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Post'
+              $ref: '#/components/schemas/PostCreate'
         required: true
       security:
       - jwtAuth: []
@@ -240,6 +240,16 @@ components:
       - created_at
       - id
       - modified_at
+      - title
+    PostCreate:
+      type: object
+      properties:
+        body:
+          type: string
+        title:
+          type: string
+      required:
+      - body
       - title
     PostLikeAnalytics:
       type: object
