@@ -7,13 +7,18 @@ paths:
   /auth/activity:
     get:
       operationId: auth_activity_retrieve
+      description: Returns user activity data
       tags:
       - auth
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserActivity'
+          description: ''
   /auth/login:
     post:
       operationId: auth_login_create
@@ -44,14 +49,31 @@ paths:
   /auth/register:
     post:
       operationId: auth_register_create
+      description: Creates a new user
       tags:
       - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
       security:
       - jwtAuth: []
       - {}
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
   /auth/token/refresh:
     post:
       operationId: auth_token_refresh_create
@@ -82,25 +104,48 @@ paths:
   /posts/:
     get:
       operationId: posts_retrieve
+      description: Returns a list of Post model instances.
       tags:
       - posts
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
     post:
       operationId: posts_create
+      description: Creates a new post by authenticated user
       tags:
       - posts
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Post'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Post'
+        required: true
       security:
       - jwtAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+          description: ''
   /posts/{post_id}/dislikes:
     delete:
       operationId: posts_dislikes_destroy
+      description: Removes the like user gave the post
       parameters:
       - in: path
         name: post_id
@@ -118,6 +163,7 @@ paths:
   /posts/{post_id}/likes:
     post:
       operationId: posts_likes_create
+      description: Creates a like on the post
       parameters:
       - in: path
         name: post_id
@@ -135,6 +181,8 @@ paths:
   /posts/likes/analytics:
     get:
       operationId: posts_likes_analytics_retrieve
+      description: Takes dates range in params to return the amount of likes made
+        that day grouped by dates
       parameters:
       - in: query
         name: date_from
@@ -159,6 +207,40 @@ paths:
           description: ''
 components:
   schemas:
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        body:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        modified_at:
+          type: string
+          format: date-time
+          readOnly: true
+        likes_number:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        author:
+          type: integer
+      required:
+      - author
+      - body
+      - created_at
+      - id
+      - modified_at
+      - title
     PostLikeAnalytics:
       type: object
       properties:
@@ -170,6 +252,37 @@ components:
       required:
       - date
       - likes_count
+    Register:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+        password2:
+          type: string
+          writeOnly: true
+        email:
+          type: string
+          format: email
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+      - password2
+      - username
     TokenObtainPair:
       type: object
       properties:
@@ -202,6 +315,18 @@ components:
       required:
       - access
       - refresh
+    UserActivity:
+      type: object
+      properties:
+        last_request_at:
+          type: string
+          format: date-time
+        last_login_at:
+          type: string
+          format: date-time
+      required:
+      - last_login_at
+      - last_request_at
   securitySchemes:
     jwtAuth:
       type: http

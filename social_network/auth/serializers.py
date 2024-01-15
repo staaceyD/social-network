@@ -40,3 +40,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
+
+class UserActivitySerializer(serializers.Serializer):
+    last_request_at = serializers.DateTimeField()
+    last_login_at = serializers.DateTimeField()

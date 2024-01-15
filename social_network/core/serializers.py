@@ -12,6 +12,9 @@ class PostLikeSerializer(serializers.ModelSerializer):
         model = PostLike
         fields = '__all__'
 
+class PostCreateSerializer(serializers.Serializer):
+    body = serializers.CharField()
+    title = serializers.CharField()
 
 class PostLikeAnalyticsSerializer(serializers.Serializer):
     date = serializers.DateField(source='created_at__date')

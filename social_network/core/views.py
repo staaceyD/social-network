@@ -4,10 +4,14 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Count
 from social_network.core.models import Post, PostLike
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema, OpenApiParameter, extend_schema_view
 
-from social_network.core.serializers import PostLikeAnalyticsSerializer, PostLikeSerializer, PostSerializer
+from social_network.core.serializers import PostLikeAnalyticsSerializer, PostLikeSerializer, PostSerializer, PostCreateSerializer
 
+@extend_schema_view(
+    get=extend_schema(description='Returns a list of Post model instances.', responses=PostSerializer),
+    post=extend_schema(description='Creates a new post by authenticated user', request=PostCreateSerializer, responses=PostSerializer),
+)
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticated])
 def posts(request):
@@ -30,6 +34,9 @@ def posts(request):
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
 def post_like(request, post_id):
+    """
+        Creates a like on the post
+    """
     user_id = request.user.pk
     post = Post.objects.get(id=post_id)
     post.likes_number +=1
@@ -45,6 +52,9 @@ def post_like(request, post_id):
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def post_dislike(request, post_id):
+    """
+        Removes the like user gave the post
+    """
     user_id = request.user.pk
     like_filter = PostLike.objects.filter(post_id=post_id, user_id=user_id).first()
     post = Post.objects.get(id=post_id)
@@ -55,7 +65,7 @@ def post_dislike(request, post_id):
     if like_filter:
         like_filter.delete()
         post.save()
-        return Response({'message':f"Post {post_id} disliked successfully"}, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
     return Response({'message':"The post cannot be disliked. Like was not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -70,6 +80,9 @@ def post_dislike(request, post_id):
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def post_like_analytics(request):
+    """
+        Takes dates range in params to return the amount of likes made that day grouped by dates
+    """
     date_from = request.query_params.get('date_from')
     date_to = request.query_params.get('date_to')
 
