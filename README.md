@@ -7,6 +7,7 @@ Simple set of REST APIs to operate users, that can perform various actions on po
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
 - [Swagger Documentation](#swagger-documentation)
+- [Linting](#linting)
 
 ## Installation
 
@@ -58,3 +59,13 @@ To generate updated file use the following command:
 ```bash
 python manage.py spectacular --color --file openapi.yml
 ```
+
+## Linting
+
+It's highly recommended that you install the pre-commit hook - this will
+automatically lint your code each time you commit.
+
+From the root of the project do this:
+
+brew install pre-commit
+pre-commit install
