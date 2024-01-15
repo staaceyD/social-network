@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Count
 from social_network.core.models import Post, PostLike
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from social_network.core.serializers import PostLikeAnalyticsSerializer, PostLikeSerializer, PostSerializer
 
@@ -58,6 +59,14 @@ def post_dislike(request, post_id):
     return Response({'message':"The post cannot be disliked. Like was not found"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(
+    parameters=[
+            OpenApiParameter(name='date_from', description='Category Id', type=str),
+            OpenApiParameter(name='date_to', description='Category Id', type=str),
+        ],
+    responses={200: PostLikeAnalyticsSerializer}
+
+)
 @api_view(["GET"])
 @permission_classes([IsAuthenticated])
 def post_like_analytics(request):
