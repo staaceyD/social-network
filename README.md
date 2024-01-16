@@ -8,6 +8,7 @@ Simple set of REST APIs to operate users, that can perform various actions on po
 - [API Endpoints](#api-endpoints)
 - [Swagger Documentation](#swagger-documentation)
 - [Linting](#linting)
+- [Automated Bot](#automated-bot)
 
 ## Installation
 
@@ -69,3 +70,15 @@ From the root of the project do this:
 
 brew install pre-commit
 pre-commit install
+
+## Automated Bot
+
+This project has automated bot. It is a tool designed to showcase the capabilities of a project through predefined rules. Configured to read rules from a customizable config file
+
+Should be executed as a regular python file from main folder:
+
+```bash
+python automated_bot/bot.py
+```
+
+Note: the bot should be run INSIDE virtual env
