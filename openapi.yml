@@ -214,6 +214,9 @@ components:
           type: string
           format: uuid
           readOnly: true
+        is_liked:
+          type: boolean
+          readOnly: true
         title:
           type: string
           maxLength: 200
@@ -239,6 +242,7 @@ components:
       - body
       - created_at
       - id
+      - is_liked
       - modified_at
       - title
     PostCreate:
