@@ -86,8 +86,18 @@ automatically lint your code each time you commit.
 
 From the root of the project do this:
 
+```bash
 brew install pre-commit
 pre-commit install
+```
+
+The same checks run in CI on every push and pull request. To run them yourself:
+
+```bash
+poetry run isort --check-only --skip-glob '*/migrations/*' .
+poetry run black --check --exclude '.*migrations/.*' .
+poetry run python manage.py test
+```
 
 ## Automated Bot
 
