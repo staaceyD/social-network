@@ -31,6 +31,24 @@ Simple set of REST APIs to operate users, that can perform various actions on po
     python manage.py migrate
     ```
 
+## Configuration
+
+`SECRET_KEY`, `DEBUG` and `ALLOWED_HOSTS` are read from the environment, and the
+defaults in `settings.py` are development-only. The dev server runs without any
+configuration; to override, copy the example file and edit it:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Default | Notes |
+| --- | --- | --- |
+| `SECRET_KEY` | `django-insecure-change-me` | Set to a real random value outside development. |
+| `DEBUG` | `true` | Any value other than `true` turns it off. |
+| `ALLOWED_HOSTS` | empty | Comma-separated, e.g. `example.com,www.example.com`. |
+
+`.env` is gitignored; `.env.example` is the tracked template.
+
 ## Usage
 
 Run the development server:
